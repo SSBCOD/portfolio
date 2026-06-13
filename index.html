@@ -700,12 +700,12 @@
         <a href="https://linkedin.com/in/sakenserikov" class="c-link rev" style="transition-delay:.4s" target="_blank" rel="noreferrer"><div class="c-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></div><div class="c-meta"><span>LinkedIn</span><span>linkedin.com/in/sakenserikov</span></div></a>
       </div>
     </div>
-    <form class="contact-form rev d2" onsubmit="return false">
-      <div class="f-group"><label data-i18n="f_name">Your Name</label><input type="text" /></div>
-      <div class="f-group"><label data-i18n="f_email">Email Address</label><input type="email" /></div>
-      <div class="f-group"><label data-i18n="f_type">Project Type</label><input type="text" /></div>
-      <div class="f-group"><label data-i18n="f_msg">Message</label><textarea></textarea></div>
-      <button class="f-submit" data-i18n="f_send">Send Message →</button>
+    <form class="contact-form rev d2" id="contactForm">
+      <div class="f-group"><label data-i18n="f_name">Your Name</label><input id="f_name" type="text" required /></div>
+      <div class="f-group"><label data-i18n="f_email">Email Address</label><input id="f_email" type="email" required /></div>
+      <div class="f-group"><label data-i18n="f_type">Project Type</label><input id="f_type" type="text" /></div>
+      <div class="f-group"><label data-i18n="f_msg">Message</label><textarea id="f_msg" required></textarea></div>
+      <button class="f-submit" id="f_submit" type="submit" data-i18n="f_send">Send Message →</button>
     </form>
   </div>
 </section>
@@ -1010,6 +1010,54 @@ row2.innerHTML = [...doubled].reverse().map(makeGalleryItem).join('') + [...doub
 document.querySelectorAll('.gallery-row').forEach(row => {
   row.addEventListener('mouseenter', () => row.style.animationPlayState = 'paused');
   row.addEventListener('mouseleave', () => row.style.animationPlayState = 'running');
+});
+
+/* ── TELEGRAM CONTACT FORM ── */
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('f_submit');
+  const name  = document.getElementById('f_name').value.trim();
+  const email = document.getElementById('f_email').value.trim();
+  const type  = document.getElementById('f_type').value.trim();
+  const msg   = document.getElementById('f_msg').value.trim();
+
+  const text = `📬 <b>Жаңа өтінім / Новая заявка!</b>\n\n` +
+    `👤 <b>Имя:</b> ${name}\n` +
+    `📧 <b>Email:</b> ${email}\n` +
+    `🎯 <b>Тип проекта:</b> ${type || '—'}\n` +
+    `💬 <b>Сообщение:</b>\n${msg}`;
+
+  btn.textContent = '⏳ Отправка...';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://api.telegram.org/bot8830604023:AAHCcL4VX9tnaUSwR67M3HjFg1r4GIo56vc/sendMessage', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: 1345818492, text, parse_mode: 'HTML' })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      btn.textContent = '✅ Жіберілді / Отправлено!';
+      btn.style.background = 'linear-gradient(135deg,#00b894,#00f5ff)';
+      this.reset();
+      setTimeout(() => {
+        btn.textContent = 'Send Message →';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 4000);
+    } else {
+      throw new Error();
+    }
+  } catch {
+    btn.textContent = '❌ Қате / Ошибка — попробуй ещё раз';
+    btn.style.background = 'linear-gradient(135deg,#e74c3c,#c0392b)';
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 4000);
+  }
 });
 
 /* ── MOBILE MENU ── */

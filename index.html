@@ -704,6 +704,7 @@
       <div class="f-group"><label data-i18n="f_name">Your Name</label><input id="f_name" type="text" required /></div>
       <div class="f-group"><label data-i18n="f_email">Email Address</label><input id="f_email" type="email" required /></div>
       <div class="f-group"><label data-i18n="f_type">Project Type</label><input id="f_type" type="text" /></div>
+      <div class="f-group"><label data-i18n="f_phone">Phone Number</label><input id="f_phone" type="tel" placeholder="+7 (___) ___-__-__" /></div>
       <div class="f-group"><label data-i18n="f_msg">Message</label><textarea id="f_msg" required></textarea></div>
       <button class="f-submit" id="f_submit" type="submit" data-i18n="f_send">Send Message →</button>
     </form>
@@ -763,7 +764,7 @@ const T = {
     t3_text:'"Our app conversion went from 2% to 7.5% after the redesign. Brilliant work."',
     contact_tag:'Get In Touch', contact_h2a:"Let's Build Something", contact_h2b:'Amazing',
     contact_p:'Ready to take your product to the next level? Available for freelance, full-time, and consulting.',
-    c_email:'Email', f_name:'Your Name', f_email:'Email Address', f_type:'Project Type', f_msg:'Message', f_send:'Send Message →',
+    c_email:'Email', f_name:'Your Name', f_email:'Email Address', f_type:'Project Type', f_phone:'Phone Number', f_msg:'Message', f_send:'Send Message →',
     footer_copy:'© 2026 Saken Serikov — UI/UX Designer'
   },
   ru: {
@@ -804,7 +805,7 @@ const T = {
     t3_text:'"Конверсия приложения выросла с 2% до 7,5% после редизайна. Блестящая работа."',
     contact_tag:'Связаться', contact_h2a:'Давайте создадим', contact_h2b:'что-то крутое',
     contact_p:'Готов взяться за ваш проект. Доступен для фриланса, полной занятости и консалтинга.',
-    c_email:'Почта', f_name:'Ваше имя', f_email:'Email адрес', f_type:'Тип проекта', f_msg:'Сообщение', f_send:'Отправить →',
+    c_email:'Почта', f_name:'Ваше имя', f_email:'Email адрес', f_type:'Тип проекта', f_phone:'Номер телефона', f_msg:'Сообщение', f_send:'Отправить →',
     footer_copy:'© 2026 Saken Serikov — UI/UX Дизайнер'
   },
   kz: {
@@ -845,7 +846,7 @@ const T = {
     t3_text:'"Қолданба конверсиясы 2%-дан 7,5%-ға дейін өсті. Керемет жұмыс."',
     contact_tag:'Байланыс', contact_h2a:'Бірге жасайық', contact_h2b:'керемет нәрсе',
     contact_p:'Жобаңызды жаңа деңгейге алуға дайынсыз ба? Фриланс, тұрақты жұмыс және консалтинг үшін қол жетімді.',
-    c_email:'Электрондық пошта', f_name:'Атыңыз', f_email:'Email мекенжайы', f_type:'Жоба түрі', f_msg:'Хабарлама', f_send:'Жіберу →',
+    c_email:'Электрондық пошта', f_name:'Атыңыз', f_email:'Email мекенжайы', f_type:'Жоба түрі', f_phone:'Телефон нөмірі', f_msg:'Хабарлама', f_send:'Жіберу →',
     footer_copy:'© 2026 Saken Serikov — UI/UX Дизайнер'
   }
 };
@@ -1019,11 +1020,13 @@ document.getElementById('contactForm').addEventListener('submit', async function
   const name  = document.getElementById('f_name').value.trim();
   const email = document.getElementById('f_email').value.trim();
   const type  = document.getElementById('f_type').value.trim();
+  const phone = document.getElementById('f_phone').value.trim();
   const msg   = document.getElementById('f_msg').value.trim();
 
   const text = `📬 <b>Жаңа өтінім / Новая заявка!</b>\n\n` +
     `👤 <b>Имя:</b> ${name}\n` +
     `📧 <b>Email:</b> ${email}\n` +
+    `📱 <b>Телефон:</b> ${phone || '—'}\n` +
     `🎯 <b>Тип проекта:</b> ${type || '—'}\n` +
     `💬 <b>Сообщение:</b>\n${msg}`;
 
